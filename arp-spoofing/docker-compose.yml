@@ -1,0 +1,48 @@
+services:
+  gateway:
+    build:
+      context: gateway
+    container_name: gateway
+    hostname: gateway
+    cap_add:
+      - NET_ADMIN
+    networks:
+      wan_net:
+      lan_net:
+        ipv4_address: 10.5.0.254
+
+  attacker:
+    build:
+      context: attacker
+    container_name: attacker
+    hostname: attacker
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    networks:
+      lan_net:
+        ipv4_address: 10.5.0.10
+    depends_on:
+      - gateway
+
+  victim:
+    build:
+      context: victim
+    container_name: victim
+    hostname: victim
+    cap_add:
+      - NET_ADMIN
+    networks:
+      lan_net:
+        ipv4_address: 10.5.0.20
+    depends_on:
+      - gateway
+
+networks:
+  wan_net:
+    driver: bridge
+  lan_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/24
