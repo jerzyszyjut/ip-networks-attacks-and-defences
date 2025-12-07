@@ -10,6 +10,7 @@ services:
       wan_net:
       lan_net:
         ipv4_address: 10.5.0.254
+        mac_address: 02:42:0a:05:00:fe
 
   attacker:
     build:
@@ -22,9 +23,9 @@ services:
     networks:
       lan_net:
         ipv4_address: 10.5.0.10
+        mac_address: 02:42:0a:05:00:0a
     depends_on:
       - gateway
-
   victim:
     build:
       context: victim
@@ -35,6 +36,7 @@ services:
     networks:
       lan_net:
         ipv4_address: 10.5.0.20
+        mac_address: 02:42:0a:05:00:14
     depends_on:
       - gateway
 
